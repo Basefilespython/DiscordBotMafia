@@ -400,7 +400,7 @@ def update():
   print(er)
   import time
   time.sleep(2)
-update()
+#update()
 
 def get_info_by_ip(ip):
     # ip = str(input())
@@ -576,23 +576,38 @@ except FileNotFoundError:
 
 
 try:
-    my_file3 = open('random_neko_list.py', 'r', encoding="utf-8")
+    my_file3 = open('baze.py', 'r', encoding="utf-8")
     my_file3.close()
 except FileNotFoundError:
     print("Локальный файл базы не обнаружен!\n")
 
 
 
-imports = {
-        "wget",
-        "pypresence",
-        "psutil",
-        "Cybernator",
-        "Button",
-        "discord.py -U",
-        "discord_webhook",
-        "discord",
-        "discord-py-slash-command"}
+# imports = {
+#         "wget",
+#         "pypresence",
+#         "psutil",
+#         "Button",
+#         "discord.py -U",
+#         "discord_webhook",
+#         "discord",
+#         "discord-py-slash-command"}
+try:
+    import wget
+except ImportError:
+    errs_in_import_module.append('wget')
+
+try:
+    import Button
+except ImportError:
+    errs_in_import_module.append('Button')
+
+try:
+    import discord_webhook
+except ImportError:
+    errs_in_import_module.append('discord_webhook')
+
+
 
 
 from os import system
@@ -602,8 +617,8 @@ try:
         system("python.exe -m pip install --upgrade pip")
     except:
         pass
-    bar = IncrementalBar('Установка / Обновление модулей', max=len(imports))
-    for module in imports:
+    bar = IncrementalBar('Установка / Обновление модулей', max=len(errs_in_import_module))
+    for module in errs_in_import_module:
         download_the_module(module)
         cls()
         bar.next()
@@ -1120,7 +1135,7 @@ async def vote(ctx, member: discord.Member = None):
                 #     with open("data_file45.json", "a") as outfile:
                 #         json.dump(ttt, outfile)
     except FileNotFoundError:
-        await ctx.reply(embed=discord.Embed(title=f"Ошибка!",description=f"Пока никто не играет!\nВы можете испарвить это прописав команду =play ```@Игрок1``````@Игрок2```.",color=colors['write']))
+        await ctx.reply(embed=discord.Embed(title=f"Ошибка!",description=f"Пока никто не играет!\nВы можете исправить это прописав команду =play ```@Игрок1``````@Игрок2```.",color=colors['write']))
 
 
 
@@ -1450,21 +1465,40 @@ async def play(ctx,*args):
                         value=f"{role_names[name_ch]['activnost_night']}", 
                         inline=False)
         embed.set_image(url=role_names[name_ch]["url"])
+
         if name_ch == "phutana":
+            stre = ""
+            for r in phutan:
+                stre = stre + f"<@{r}>\n" 
+            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await love_ch.send(embed = embed) 
         if name_ch == "cher":
+            stre = ""
+            for r in che:
+                stre = stre + f"<@{r}>\n" 
+            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await cherif_ch.send(embed = embed)
         if name_ch == "maf":
+            stre = ""
+            for r in maf:
+                stre = stre + f"<@{r}>\n" 
+            for r in doni:
+                stre = stre + f"<@{r}>\n" 
+            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await mafiozy_and_don_ch.send(embed = embed)
         if name_ch == "doc":
+            stre = ""
+            for r in doci:
+                stre = stre + f"<@{r}>\n" 
+            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await doc_ch.send(embed = embed)
+            
 
 
 
 
     while (len_maf_com != len_mir_com) or (len_maf_com != 0):
-                await osnowa_ch.send(embed = discord.embed(title = 'Ночь',
-                                      decription = f'Сейчас ночь.\nМафия общается в чате.\n >>> {mafiozy_and_don_ch.mention}'))
+                await osnowa_ch.send(embed = discord.Embed(title = 'Ночь',description = f'Сейчас ночь.\nМафия общается в чате.\n >>> {mafiozy_and_don_ch.mention}'))
                 
                 for mem in members_roles:
                     if list(mem.keys())[0] != "day_or_night":
@@ -1494,34 +1528,7 @@ async def play(ctx,*args):
                     else:
                       pass
 
-                names_ch_role = ['phutana','cher', 'doc','maf']
-                for name_ch in names_ch_role:
-                        if name_ch == 'maf':    
-                            stre = ""
-                            for r in maf:
-                                stre = stre + f"<@{r}>\n" 
-                            for r in doni:
-                                stre = stre + f"<@{r}>\n" 
-                            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
-                            await mafiozy_and_don_ch.send(embed = embed)
-                        if name_ch == 'phutana':
-                            stre = ""
-                            for r in phutan:
-                                stre = stre + f"<@{r}>\n" 
-                            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
-                            await love_ch.send(embed = embed)
-                        if name_ch == 'doc':
-                            stre = ""
-                            for r in doci:
-                                stre = stre + f"<@{r}>\n" 
-                            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
-                            await doc_ch.send(embed = embed)
-                        if name_ch == 'cher':
-                            stre = ""
-                            for r in che:
-                                stre = stre + f"<@{r}>\n" 
-                            embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
-                            await cherif_ch.send(embed = embed)
+                
 
                 print('Ночь')
 
@@ -1626,35 +1633,26 @@ async def play(ctx,*args):
                     await osnowa_ch.set_permissions(member_in_room, read_message_history = True, send_messages = True, attach_files = True, embed_links = True,read_messages = True)
                     
                     a = int(mem[f"{list(mem.keys())[0]}"][f"{(list(mem[f'{list(mem.keys())[0]}'].keys())[0])}"])
+                    await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
+                    await love_ch.set_permissions(member_in_room, read_messages=False, send_messages= False,mention_everyone = False)
+                    await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
+                    await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
 
                     if (a == 5) or (a== 6):
                         await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=True, send_messages=False,mention_everyone = False)
-                        await love_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
+                        
                     if a == 3:
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await love_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await cherif_ch.set_permissions(member_in_room, read_messages=True, send_messages=False,mention_everyone = False)
 
                     if a == 4:
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await love_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await doc_ch.set_permissions(member_in_room, read_messages=True, send_messages=False,mention_everyone = False)
-                        await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
 
                     if a == 2:
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await love_ch.set_permissions(member_in_room, read_messages=True, send_messages= False,mention_everyone = True)
-                        await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
+                        
 
                     if a == 1:
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await love_ch.set_permissions(member_in_room, read_messages=False, send_messages= False,mention_everyone = False)
-                        await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                        await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
+                       pass
                   else:
                       pass
 
@@ -1740,6 +1738,9 @@ async def play(ctx,*args):
                     timer = timer -  1
                     if timer == -1:
                         break
+                    await osnowa_ch.send('Время вышло!')
+
+
     if len_maf_com == len_mir_com:
         itog_name = "mafia"
         itog = discord.Embed(title=f'Игра окончена!',
