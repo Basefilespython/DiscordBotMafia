@@ -1,5 +1,5 @@
 from itertools import chain
-version = '0.0.1'
+version = '0.0.2'
 
 def alive_or_dead(ste, members_roles):
     with open("members_roles.py") as my_file:
@@ -379,8 +379,7 @@ def download_file_from_github(file_name):
             return f'Loaded file [{local_filename}]'
         except Exception as err:
             return f'Failed load file [{local_filename}][{err.code}]'
-    file_name = download_file(url)
-    pass
+    return download_file(url)
 
 
 
