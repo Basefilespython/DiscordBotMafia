@@ -1,5 +1,5 @@
 from itertools import chain
-version = '0.0.2'
+version = '0.0.4'
 
 def alive_or_dead(ste, members_roles):
     with open("members_roles.py") as my_file:
