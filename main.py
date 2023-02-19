@@ -400,7 +400,7 @@ def update():
   print(er)
   import time
   time.sleep(2)
-#update()
+update()
 
 def get_info_by_ip(ip):
     # ip = str(input())
