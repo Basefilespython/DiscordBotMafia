@@ -24,7 +24,7 @@ def download_the_module(module):
    try: 
     if os.uname()[0]== "Linux":
         print(f"{red} Введите пароль администратора для продолжения скачивания модуля ({module}).")
-        system(f"sudo pip install {module}")
+        system(f"sudo pip install {module} -U")
         print(f"{white}")
         try:
             import aiohttp
@@ -33,9 +33,9 @@ def download_the_module(module):
             print(f"Установка модуля {module}  не была завершена.")
 
     else:
-        system(f"pip3 install {module}")
+        system(f"pip3 install {module} -U")
    except:    
-        system(f"pip install {module}")
+        system(f"pip install {module} -U")
 
 def main(members_in_room):
     members_spicok = members_in_room
