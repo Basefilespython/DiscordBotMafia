@@ -372,7 +372,7 @@ def download_file_from_github(file_name):
             local_filename = url.split('/')[-1]
             #while not os.path.exists(local_filename):
             with requests.get(url, stream=True, allow_redirects=True) as r:
-                    r.pass_for_status()
+                    r.raise_for_status()
                     with open(local_filename, 'wb') as f:
                         for chunk in r.iter_content(chunk_size=8192):
                             f.write(chunk)
