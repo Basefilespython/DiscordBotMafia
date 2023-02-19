@@ -273,38 +273,33 @@ st = "\033[37"
 
 print('*'*80 + '\nStarting')
 from os import system
+
+errs_in_import_module = []
+
 try:
     from tkinter import *
 except ImportError:
     system("pip install tkinter")
-#import tkinter.messagebox as box
-import asyncio
-import os
-from threading import Thread
 
-import subprocess
-import getpass
-import traceback
+
+
+
+try:
+    import getpass
+except ImportError:
+    errs_in_import_module.append('getpass')
+
 try:
     import aiohttp
 except ImportError:
-    download_the_module("aiohttp")
-    try:
-        import aiohttp
-    except ImportError:
-        pass
+    errs_in_import_module.append('aiohttp')
+
 
 try:
     import requests
 except ImportError:
-    download_the_module("requests")
-    try:
-        import requests
-    except ImportError:
-        pass    
-    
-    
-    
+    errs_in_import_module.append('requests')
+
 try:
     import psutil
 except ImportError:
@@ -314,35 +309,48 @@ except ImportError:
     except ImportError:
         pass
 
-import platform
+try:
+    import platform
+except ImportError:
+    errs_in_import_module.append('platform')
 
 from os import system
 
-import asyncio
+try:
+    import asyncio
+except ImportError:
+    errs_in_import_module.append('asyncio')
 import os
-import socket
-import subprocess
+try:
+    import socket
+except ImportError:
+    errs_in_import_module.append('socket')
 
-#from pypresence import Presence
-
+try:
+    import subprocess
+except ImportError:
+    errs_in_import_module.append('subprocess')
 
 try:
     from pypresence import Presence
 except ImportError:
-    download_the_module("pypresence")
-    try:
-        from pypresence import Presence
-    except ImportError:
-        pass
+    errs_in_import_module.append('pypresence')
+
 
 import time
 from time import sleep
+try:
+    import random
+    from random import randint
+except ImportError:
+    errs_in_import_module.append('random')
 
-import random
-from random import randint
 
-
-
+if len(errs_in_import_module) == 0:
+    pass
+else:
+    for failing_module in errs_in_import_module:
+        download_the_module(failing_module) 
 
 
 
