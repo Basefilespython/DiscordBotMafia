@@ -367,14 +367,14 @@ def download_file_from_github(file_name):
                             f.write(chunk)
             return f'Loaded file [{local_filename}]'
         except Exception as err:
-            return f'Failed load file [{local_filename}]'
+            return f'Failed load file [{local_filename}][{err.code}]'
     file_name = download_file(url)
     pass
 
 
 
 def update():
-  file_names = ['main.py']
+  file_names = ['main.py','baza.py','ping.gif','LICENSE','README.md']
   er = ''
   for file_name in file_names:
     er = er + "\n" + str(download_file_from_github(file_name))
@@ -382,7 +382,7 @@ def update():
   print(er)
   import time
   time.sleep(2)
-
+update()
 
 def get_info_by_ip(ip):
     # ip = str(input())
