@@ -240,7 +240,7 @@ def main(members_in_room):
                 # maf,che,mirn,doni,doci,phutan = raspredelenie(maf,che,mirn,doni,doci,phutan)
     
     with open("members_roles.json", "w") as file:
-        json.dump(members_roles, file)
+        json.dump(members_roles, file, indent = 4)
     with open("members_roles.py", "w") as file:
         file.write(str(json.dumps(members_roles, indent = 4) ))
 
