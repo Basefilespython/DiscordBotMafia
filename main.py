@@ -295,6 +295,17 @@ except ImportError:
         pass
 
 try:
+    import requests
+except ImportError:
+    download_the_module("requests")
+    try:
+        import requests
+    except ImportError:
+        pass    
+    
+    
+    
+try:
     import psutil
 except ImportError:
     download_the_module("psutil")
