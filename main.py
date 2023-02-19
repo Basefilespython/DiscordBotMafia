@@ -1738,7 +1738,7 @@ async def play(ctx,*args):
                     timer = timer -  1
                     if timer == -1:
                         break
-                    await osnowa_ch.send('Время вышло!')
+                await osnowa_ch.send('Время вышло!')
 
 
     if len_maf_com == len_mir_com:
