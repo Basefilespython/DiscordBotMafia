@@ -178,15 +178,50 @@ def main(members_in_room):
             
     mirn = mir(members_spicok)
     print(members_roles)
-    print(f'''
-    mafia: {maf}
-    cher: {che}
-    mirny: {mirn}
-    don: {doni}
-    doc: {doci}
-    phutan: {phutan}
+
+
+    i =''
+    for w in maf.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        i = i + f"{str(mem.name)} " 
+        
+
+    qw =''
+    for w in che.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        qw = qw + f"{str(mem.name)} " 
+    mr =''
+    for w in mirn.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        mr = mr + f"{str(mem.name)} " 
+    ph =''
+    for w in phutan.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        ph = ph + f"{str(mem.name)} " 
+    do =''
+    for w in doni.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        do = do + f"{str(mem.name)} " 
+    docq =''
+    for w in doci.split():
+        print(w)
+        mem = bot.get_user(int(w))
+        docq = docq + f"{str(mem.name)} " 
+    info =(f'''
+    mafia: {i}
+    cher: {qw}
+    mirny: {mr}
+    don: {do}
+    doc: {docq}
+    phutan: {ph}
     
     ''')
+    print(info)
 
     len_maf_command, len_mir_command = len_maf_and_mirn(maf, che, mirn, doni, doci, phutan)
 
@@ -240,11 +275,11 @@ def main(members_in_room):
                 # maf,che,mirn,doni,doci,phutan = raspredelenie(maf,che,mirn,doni,doci,phutan)
     
     with open("members_roles.json", "w") as file:
-        json.dump(members_roles, file, indent = 4)
+        json.dump(members_roles, file)
     with open("members_roles.py", "w") as file:
         file.write(str(json.dumps(members_roles, indent = 4) ))
 
-    return maf,che,mirn,doni,doci,phutan,members_roles,len_maf_command, len_mir_command
+    return maf,che,mirn,doni,doci,phutan,members_roles,len_maf_command, len_mir_command,info
 
 
 
@@ -336,6 +371,7 @@ try:
 except ImportError:
     errs_in_import_module.append('pypresence')
 
+from urllib.error import HTTPError
 
 import time
 from time import sleep
@@ -386,13 +422,13 @@ def download_file_from_github(file_name):
                             f.write(chunk)
             return f'Loaded file [{local_filename}]'
         except Exception as err:
-            return f'Failed load file [{local_filename}][{err.code}]'
+            return f'Failed load file [{local_filename}]'
     return download_file(url)
 
 
 
 def update():
-  file_names = ['main.py','baza.py','ping.gif','LICENSE','README.md']
+  file_names = ['baza.py','ping.gif','LICENSE','README.md']#'main.py',
   er = ''
   for file_name in file_names:
     er = er + "\n" + str(download_file_from_github(file_name))
@@ -611,6 +647,7 @@ except ImportError:
 
 
 from os import system
+
 try:
 
     try:
@@ -710,7 +747,7 @@ try:
         except ImportError:
             system("pip install Cybernator")
         
-        from urllib.error import HTTPError
+        
         from discord.ext.commands import Bot
         from discord.utils import get
 
@@ -1217,21 +1254,21 @@ async def ping(ctx):
       await ctx.message.add_reaction(net_blet)
 
 
-@bot.command()
-async def кусь(ctx):
+# @bot.command()
+# async def кусь(ctx):
 
 
-      embed = discord.Embed(color=colors['write'])
-      embed.set_image(url= "https://cs4.pikabu.ru/images/big_size_comm_an/2016-08_2/1470580009180657914.gif")
-      await ctx.reply(embed = embed)
-      net_blet  = bot.get_emoji(946362122458234920)
-      await ctx.message.add_reaction(net_blet)
+#       embed = discord.Embed(color=colors['write'])
+#       embed.set_image(url= "https://cs4.pikabu.ru/images/big_size_comm_an/2016-08_2/1470580009180657914.gif")
+#       await ctx.reply(embed = embed)
+#       net_blet  = bot.get_emoji(946362122458234920)
+#       await ctx.message.add_reaction(net_blet)
 
 
 
-@bot.command()
-async def hack(ctx):
-  await ctx.reply("█████████▀▀▀▀▀▀▀██████████████▌\n████████▀⠀⠀⠀⠀⠀⠀⠀⠀⠀▀████████████▌\n███████▀⠀⠀⠀▄▀▀▀▀▀▀▀███████████▌\n██████▌⠀⠀ ⠀▌⠀⠀⠀⠀⠀⠀⠀⠀  █████████▌\n██████▌⠀⠀⠀⠀▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀██████████\n██▀⠀⠀█▌⠀⠀⠀⠀█▄▄▄▄▄▄▄▄▄██████████\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀▀▀▀▀▀▀▀⠀██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n██▄▄▄█▌⠀⠀⠀⠀▄▄▄▄▄ ⠀⠀ ███████████▌\n██████▌⠀⠀⠀⠀⠀███▌⠀⠀⠀  ██████████▌\n██████▌⠀⠀⠀⠀⠀████▄   ▄██████████▌\n███████▄▄▄████████████████████▌\n▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n  Хм, похоже ты знаешь эту команду.")
+# @bot.command()
+# async def hack(ctx):
+#   await ctx.reply("█████████▀▀▀▀▀▀▀██████████████▌\n████████▀⠀⠀⠀⠀⠀⠀⠀⠀⠀▀████████████▌\n███████▀⠀⠀⠀▄▀▀▀▀▀▀▀███████████▌\n██████▌⠀⠀ ⠀▌⠀⠀⠀⠀⠀⠀⠀⠀  █████████▌\n██████▌⠀⠀⠀⠀▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀██████████\n██▀⠀⠀█▌⠀⠀⠀⠀█▄▄▄▄▄▄▄▄▄██████████\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀▀▀▀▀▀▀▀⠀██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n██▄▄▄█▌⠀⠀⠀⠀▄▄▄▄▄ ⠀⠀ ███████████▌\n██████▌⠀⠀⠀⠀⠀███▌⠀⠀⠀  ██████████▌\n██████▌⠀⠀⠀⠀⠀████▄   ▄██████████▌\n███████▄▄▄████████████████████▌\n▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n  Хм, похоже ты знаешь эту команду.")
 
 
 
@@ -1307,8 +1344,12 @@ async def play(ctx,*args):
         except:
             try:
                 if member.bot and member != None:
-                 lobby.add_field(name=name, value="**❌(BOT)**", inline=True)
-                 await ctx.reply(f"Нельзя добавить бота!({member.name})")
+                    lobby.add_field(name=name, value="**❌(BOT)**", inline=True)
+                    await ctx.reply(f"Нельзя добавить бота!({member.mention})")
+                    try:
+                        members_in_room.remove(str(member.id))
+                    except Exception:
+                        pass
                 else:  
                  pass 
             except:
@@ -1342,7 +1383,7 @@ async def play(ctx,*args):
         categori_lob = await ctx.guild.create_category_channel(name = name_room, reason="Создана новая комната.",overwrites=overwrites_role_comnata)
         osnowa_ch = await ctx.guild.create_text_channel(name = f"Основной - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_comnata, category = categori_lob)
         doc_ch = await ctx.guild.create_text_channel(name = f"Доктор - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
-        love_ch = await ctx.guild.create_text_channel(name = f"Любовница - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_comnata, category = categori_lob)
+        love_ch = await ctx.guild.create_text_channel(name = f"Любовница - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
         mafiozy_and_don_ch = await ctx.guild.create_text_channel(name = f"Мафия и Дон - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
         cherif_ch = await ctx.guild.create_text_channel(name = f"Шериф - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
         
@@ -1408,7 +1449,7 @@ async def play(ctx,*args):
     #await msg.delete()
     await osnowa_ch.send(f"**Настройка параметров**")
     print(f"Настройка параметров")
-    maf,che,mirn,doni,doci,phutan,members_roles,len_maf_com, len_mir_com = main(members_in_room)
+    maf,che,mirn,doni,doci,phutan,members_roles,len_maf_com, len_mir_com, info = main(members_in_room)
 
 
     st =1
@@ -1427,21 +1468,22 @@ async def play(ctx,*args):
                     await love_ch.set_permissions(member_in_room, read_messages=False, send_messages= False,mention_everyone = False)
                     await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                     await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
-                    if (a == 5) or (a== 6):
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
-                    if a == 3:
-                        await cherif_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
+                    print(f'{mem} - {a}')
+                #     if (a == 5) or (a== 6):
+                #         await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
+                #     if a == 3:
+                #         await cherif_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
 
-                    if a == 4:
-                        await doc_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
+                #     if a == 4:
+                #         await doc_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
 
-                    if a == 2:
-                        await love_ch.set_permissions(member_in_room, read_messages=True, send_messages= True,mention_everyone = True)
+                #     if a == 2:
+                #         await love_ch.set_permissions(member_in_room, read_messages=True, send_messages= True,mention_everyone = True)
 
-                    if a == 1:
-                        pass
-                   else:
-                       pass
+                #     if a == 1:
+                #         pass
+                #    else:
+                #        pass
 
     else:
             pass
@@ -1463,23 +1505,27 @@ async def play(ctx,*args):
                               colour=colors['write'])
         embed.add_field(name="Активность ночью",
                         value=f"{role_names[name_ch]['activnost_night']}", 
-                        inline=False)
+                        inline=True)
         embed.set_image(url=role_names[name_ch]["url"])
-
+        
         if name_ch == "phutana":
             stre = ""
+            phutan = phutan.split()
             for r in phutan:
                 stre = stre + f"<@{r}>\n" 
             embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await love_ch.send(embed = embed) 
         if name_ch == "cher":
             stre = ""
+            che = che
             for r in che:
                 stre = stre + f"<@{r}>\n" 
             embed.add_field(name="Игроки у вас в команде:", value=f"{stre}", inline=False)
             await cherif_ch.send(embed = embed)
         if name_ch == "maf":
             stre = ""
+           
+            print(f'maf - {maf}. don - {doni}')
             for r in maf:
                 stre = stre + f"<@{r}>\n" 
             for r in doni:
@@ -1496,7 +1542,7 @@ async def play(ctx,*args):
 
 
 
-
+    await osnowa_ch.send(info)
     while (len_maf_com != len_mir_com) or (len_maf_com != 0):
                 await osnowa_ch.send(embed = discord.Embed(title = 'Ночь',description = f'Сейчас ночь.\nМафия общается в чате.\n >>> {mafiozy_and_don_ch.mention}'))
                 
@@ -1903,6 +1949,12 @@ while True:
         except urllib3.exceptions.NewConnectionError:
             ply("Запуск бота не удался.","Проверьте доступ в Интернет!")
             print("Проверьте доступ в Интернет!")
+        except aiohttp.client_exceptions.ClientOSError as err:
+            ply("Ваш пинг слишком огромен!",f"ERR: {err}")
+            print("Ваш пинг слишком огромен!")
+        except aiohttp.client_exceptions.ClientConnectorError as err:
+            ply("Скрипт не смог подключиться к discord.gg.",f"ERR: {err}")
+            print("Скрипт не смог подключиться к discord.gg.")
         except Exception as err:
               ply("Запуск бота не удался.",f"ERR: {err}")
 
