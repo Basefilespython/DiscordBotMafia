@@ -1,5 +1,5 @@
 from itertools import chain
-version = '0.0.6'
+version = '0.0.4'
 
 def alive_or_dead(ste, members_roles):
     with open("members_roles.py") as my_file:
@@ -275,7 +275,7 @@ def main(members_in_room):
                 # maf,che,mirn,doni,doci,phutan = raspredelenie(maf,che,mirn,doni,doci,phutan)
     
     with open("members_roles.json", "w") as file:
-        json.dump(members_roles, file, indent = 4)
+        json.dump(members_roles, file)
     with open("members_roles.py", "w") as file:
         file.write(str(json.dumps(members_roles, indent = 4) ))
 
@@ -428,7 +428,7 @@ def download_file_from_github(file_name):
 
 
 def update():
-  file_names = ['main.py','baza.py','ping.gif','LICENSE','README.md']
+  file_names = ['baza.py','ping.gif','LICENSE','README.md']#'main.py',
   er = ''
   for file_name in file_names:
     er = er + "\n" + str(download_file_from_github(file_name))
@@ -533,7 +533,7 @@ def is_pip():
         download_the_module("progress")
 
         try:
-            import progress
+            #import progress
             from progress.bar import Bar, IncrementalBar
             return True
         except:
@@ -578,12 +578,12 @@ else:
 
 
 try:
-    import progress
+    #import progress
     from progress.bar import Bar, IncrementalBar
 except:
     try:
         system("pip3 install progress")
-        import progress
+        #import progress
         from progress.bar import Bar, IncrementalBar
     except:
         print(f"{red}Установите pip.{white}")
@@ -633,10 +633,10 @@ try:
 except ImportError:
     errs_in_import_module.append('wget')
 
-try:
-    import Button
-except ImportError:
-    errs_in_import_module.append('Button')
+# try:
+#     import Button
+# except ImportError:
+#     errs_in_import_module.append('Button')
 
 try:
     import discord_webhook
@@ -873,6 +873,10 @@ async def status_task():
     await asyncio.sleep(6)
     await bot.wait_until_ready()
 
+
+
+
+
 @bot.event
 async def on_ready():
     ply("Успешно запущено!",f"Бот запущен!  {settings['bot']}")   
@@ -986,6 +990,140 @@ async def on_ready():
         #tray()
     except Exception:
         pass
+
+
+
+def permissions_for_roles(channel: discord.channel, *roles: discord.Role):
+    """
+    Calculates the effective permissions for a role or combination of roles.
+    Naturally, if no roles are given, the default role's permissions are used
+    """
+    default = channel.guild.default_role
+    base = discord.Permissions(default.permissions.value)
+
+    # Apply all role values
+    for role in roles:
+        base.value |= role.permissions.value
+
+    # Server-wide Administrator -> True for everything
+    # Bypass all channel-specific overrides
+    if base.administrator:
+        return discord.Permissions.all()
+
+    role_ids = set(map(lambda r: r.id, roles))
+    denies = 0
+    allows = 0
+
+    # Apply channel specific role permission overwrites
+    # noinspection PyProtectedMember
+    for overwrite in channel.permission_overwrites:
+        # Handle default role first, if present
+        if overwrite.id == default.id:
+            base.handle_overwrite(allow=overwrite.allow, deny=overwrite.deny)
+
+        if overwrite.type == 'role' and overwrite.id in role_ids:
+            denies |= overwrite.deny
+            allows |= overwrite.allow
+
+    base.handle_overwrite(allow=allows, deny=denies)
+
+    # default channels can always be read
+    if channel.is_default:
+        base.read_messages = True
+
+    # if you can't send a message in a channel then you can't have certain
+    # permissions as well
+    if not base.send_messages:
+        base.send_tts_messages = False
+        base.mention_everyone = False
+        base.embed_links = False
+        base.attach_files = False
+
+    # if you can't read a channel then you have no permissions there
+    if not base.read_messages:
+        denied = discord.Permissions.all_channel()
+        base.value &= ~denied.value
+
+    # text channels do not have voice related permissions
+    if channel.type is discord.ChannelType.text:
+        denied = discord.Permissions.voice()
+        base.value &= ~denied.value
+
+    return base 
+
+
+
+def permissions_for_roles454(channel: discord.channel, *roles: discord.Role):
+    print(channel.overwrites)
+    # """
+    # Calculates the effective permissions for a role or combination of roles.
+    # Naturally, if no roles are given, the default role's permissions are used
+    # """
+    # default = channel.guild.default_role
+    # base = discord.Permissions(default.permissions.value)
+
+    # # Apply all role values
+    # for role in roles:
+    #     base.value |= role.permissions.value
+
+    # # Server-wide Administrator -> True for everything
+    # # Bypass all channel-specific overrides
+    # if base.administrator:
+    #     return discord.Permissions.all()
+
+    # role_ids = set(map(lambda r: r.id, roles))
+    # denies = 0
+    # allows = 0
+
+    # # Apply channel specific role permission overwrites
+    # # noinspection PyProtectedMember
+    # for overwrite in channel.permission_overwrites:
+    #     # Handle default role first, if present
+    #     if overwrite.id == default.id:
+    #         base.handle_overwrite(allow=overwrite.allow, deny=overwrite.deny)
+
+    #     if overwrite.type == 'role' and overwrite.id in role_ids:
+    #         denies |= overwrite.deny
+    #         allows |= overwrite.allow
+
+    # base.handle_overwrite(allow=allows, deny=denies)
+
+    # # default channels can always be read
+    # if channel.is_default:
+    #     base.read_messages = True
+
+    # # if you can't send a message in a channel then you can't have certain
+    # # permissions as well
+    # if not base.send_messages:
+    #     base.send_tts_messages = False
+    #     base.mention_everyone = False
+    #     base.embed_links = False
+    #     base.attach_files = False
+
+    # # if you can't read a channel then you have no permissions there
+    # if not base.read_messages:
+    #     denied = discord.Permissions.all_channel()
+    #     base.value &= ~denied.value
+
+    # # text channels do not have voice related permissions
+    # if channel.type is discord.ChannelType.text:
+    #     denied = discord.Permissions.voice()
+    #     base.value &= ~denied.value
+
+    # return base 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @bot.command()
 async def vote(ctx, member: discord.Member = None):
@@ -1266,15 +1404,29 @@ async def ping(ctx):
 
 
 
-# @bot.command()
-# async def hack(ctx):
-#   await ctx.reply("█████████▀▀▀▀▀▀▀██████████████▌\n████████▀⠀⠀⠀⠀⠀⠀⠀⠀⠀▀████████████▌\n███████▀⠀⠀⠀▄▀▀▀▀▀▀▀███████████▌\n██████▌⠀⠀ ⠀▌⠀⠀⠀⠀⠀⠀⠀⠀  █████████▌\n██████▌⠀⠀⠀⠀▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀██████████\n██▀⠀⠀█▌⠀⠀⠀⠀█▄▄▄▄▄▄▄▄▄██████████\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀▀▀▀▀▀▀▀⠀██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n██▄▄▄█▌⠀⠀⠀⠀▄▄▄▄▄ ⠀⠀ ███████████▌\n██████▌⠀⠀⠀⠀⠀███▌⠀⠀⠀  ██████████▌\n██████▌⠀⠀⠀⠀⠀████▄   ▄██████████▌\n███████▄▄▄████████████████████▌\n▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n  Хм, похоже ты знаешь эту команду.")
+@bot.command()
+async def hack(ctx):
+   await ctx.reply("█████████▀▀▀▀▀▀▀██████████████▌\n████████▀⠀⠀⠀⠀⠀⠀⠀⠀⠀▀████████████▌\n███████▀⠀⠀⠀▄▀▀▀▀▀▀▀███████████▌\n██████▌⠀⠀ ⠀▌⠀⠀⠀⠀⠀⠀⠀⠀  █████████▌\n██████▌⠀⠀⠀⠀▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀██████████\n██▀⠀⠀█▌⠀⠀⠀⠀█▄▄▄▄▄▄▄▄▄██████████\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀▀▀▀▀▀▀▀⠀██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ██████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n█▌⠀⠀⠀█▌⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀███████████▌\n██▄▄▄█▌⠀⠀⠀⠀▄▄▄▄▄ ⠀⠀ ███████████▌\n██████▌⠀⠀⠀⠀⠀███▌⠀⠀⠀  ██████████▌\n██████▌⠀⠀⠀⠀⠀████▄   ▄██████████▌\n███████▄▄▄████████████████████▌\n▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁\n  Хм, похоже ты знаешь эту команду.")
 
 
 
 
 @bot.command()
+#@commands.has_permissions(read_message_history = False)
 async def play(ctx,*args):
+    perms1 = discord.Permissions(read_message_history =True)
+    perms2 = discord.Permissions(read_messages=True)
+    # for df in ctx.guild.permissions:
+    #     print(df)
+    # for role in ctx.guild.roles:
+    #     print(role)
+    #     if role.Permissions.read_message_history == True:
+    #         print(role, True)
+    # while True:
+    #     pass
+
+
+
     guild_id = ctx.message.guild.id
     lobby = discord.Embed(title='Лобби комнаты', colour=colors['write'])
     members_in_room = []
@@ -1386,7 +1538,7 @@ async def play(ctx,*args):
         love_ch = await ctx.guild.create_text_channel(name = f"Любовница - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
         mafiozy_and_don_ch = await ctx.guild.create_text_channel(name = f"Мафия и Дон - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
         cherif_ch = await ctx.guild.create_text_channel(name = f"Шериф - {name_room}", reason="Создана новая комната.", overwrites=overwrites_role_srytny, category = categori_lob)
-        
+        channel_s = [osnowa_ch,doc_ch,love_ch,mafiozy_and_don_ch,cherif_ch]
         
         
         await ctx.channel.send("Категория и каналы созданны!")
@@ -1419,6 +1571,11 @@ async def play(ctx,*args):
     lobb_emb.add_field(name="Игроки находящиеся в лобби:", value=stre, inline=False)
     msg = await osnowa_ch.send(embed = lobb_emb)
     import time
+
+    for channel_on in channel_s:
+        ses = permissions_for_roles454(channel_on)
+        #ses = permissions_for_roles(channel_on)
+        print(f"{ses}")
 
     timer = 90
     gg = False
@@ -1506,6 +1663,9 @@ async def play(ctx,*args):
         embed.add_field(name="Активность ночью",
                         value=f"{role_names[name_ch]['activnost_night']}", 
                         inline=True)
+        embed.add_field(name="Активность днем",
+                        value=f"{role_names[name_ch]['activnost_day']}", 
+                        inline=True)
         embed.set_image(url=role_names[name_ch]["url"])
         
         if name_ch == "phutana":
@@ -1555,7 +1715,7 @@ async def play(ctx,*args):
                         await osnowa_ch.set_permissions(member_in_room, read_message_history = True, send_messages = False, attach_files = False, embed_links = False,read_messages = True)
                         
                         a = int(mem[f"{list(mem.keys())[0]}"][f"{(list(mem[f'{list(mem.keys())[0]}'].keys())[0])}"])
-                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=True, send_messages=True,mention_everyone = True)
+                        await mafiozy_and_don_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await love_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await doc_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
                         await cherif_ch.set_permissions(member_in_room, read_messages=False, send_messages=False,mention_everyone = False)
@@ -1810,7 +1970,15 @@ async def play(ctx,*args):
      #   itog.add_field(name="Команда голоса", value=f"=vote", inline=False)
      #   itog.add_field(name="Ночь начнется через", value=f"{elem}", inline=True)
 
-
+# @play.error
+# async def role_error(error, ctx):
+#     if isinstance(error, commands.CheckFailure):
+#         await ctx.send("Вы не должны иметь права просматривать все каналы!")
+#     elif isinstance(error, commands.BadArgument):
+#         await ctx.send("Could not identify target")
+#     else: 
+#         print(error)
+#         #raise error
 
 
 
