@@ -1,5 +1,5 @@
 from itertools import chain
-version = '0.0.4'
+version = '0.0.6'
 
 def alive_or_dead(ste, members_roles):
     with open("members_roles.py") as my_file:
@@ -275,7 +275,7 @@ def main(members_in_room):
                 # maf,che,mirn,doni,doci,phutan = raspredelenie(maf,che,mirn,doni,doci,phutan)
     
     with open("members_roles.json", "w") as file:
-        json.dump(members_roles, file)
+        json.dump(members_roles, file, indent = 4)
     with open("members_roles.py", "w") as file:
         file.write(str(json.dumps(members_roles, indent = 4) ))
 
@@ -428,7 +428,7 @@ def download_file_from_github(file_name):
 
 
 def update():
-  file_names = ['baza.py','ping.gif','LICENSE','README.md']#'main.py',
+  file_names = ['main.py','baza.py','ping.gif','LICENSE','README.md']
   er = ''
   for file_name in file_names:
     er = er + "\n" + str(download_file_from_github(file_name))
