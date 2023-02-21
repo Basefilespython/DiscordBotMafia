@@ -338,11 +338,12 @@ except ImportError:
 try:
     import psutil
 except ImportError:
-    download_the_module("psutil")
-    try:
-        import psutil
-    except ImportError:
-        pass
+    errs_in_import_module.append('psutil')
+    # download_the_module("psutil")
+    # try:
+    #     import psutil
+    # except ImportError:
+    #     pass
 
 try:
     import platform
@@ -421,7 +422,7 @@ def download_file_from_github(file_name):
                         for chunk in r.iter_content(chunk_size=8192):
                             f.write(chunk)
             return f'Loaded file [{local_filename}]'
-        except Exception as err:
+        except Exception:
             return f'Failed load file [{local_filename}]'
     return download_file(url)
 
@@ -436,7 +437,7 @@ def update():
   print(er)
   import time
   time.sleep(2)
-update()
+#update()
 
 def get_info_by_ip(ip):
     # ip = str(input())
@@ -452,6 +453,10 @@ def get_info_by_ip(ip):
                     url=f'http://ip-api.com/json/{ip}?lang=ru').json()
             except:
                 data = "❌Информация не найдена. Проверьте данные!"
+            try:
+                psutil_cpu_per = psutil.cpu_percent(interval=1)
+            except:
+                psutil_cpu_per = 'Ошибка в получении нагрузки системы'
             if psutil.sensors_battery() is not None:
                 ps_sen_batt = str(psutil.sensors_battery().percent)+"%"
             else:
@@ -474,7 +479,7 @@ def get_info_by_ip(ip):
                 🖥Процент заряда - {ps_sen_batt}
                 🕋Имя пользователя: {getpass.getuser()}
                 🚀Время загрузки системы: {datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")}
-                🏁Нагрузка системы: {psutil.cpu_percent(interval=1)}
+                🏁Нагрузка системы: {psutil_cpu_per}
                 '''.replace(
                     "                ", "")
                 # print(data)
@@ -488,7 +493,7 @@ def get_info_by_ip(ip):
        🖥Процент заряда - {ps_sen_batt}
        🕋Имя пользователя: {getpass.getuser()}
        🚀Время загрузки системы: {datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")}
-       🏁Нагрузка системы: {psutil.cpu_percent(interval=1)}'''
+       🏁Нагрузка системы: {psutil_cpu_per}'''
        return data
 
 
@@ -519,13 +524,13 @@ def is_connected(hostname):
     except Exception:
         return False
     
-# if is_connected(hostname) == True:
-#     pass
-# else:
-#     cls()
-#     print(f"{red}Подключитесь к Интернету!{white}")
-#     while is_connected(hostname) == False:
-#         pass
+if is_connected(hostname) == True:
+    pass
+else:
+    cls()
+    print(f"{red}Подключитесь к Интернету!{white}")
+    while is_connected(hostname) == False:
+        pass
 
 
 def is_pip():
@@ -612,7 +617,7 @@ except FileNotFoundError:
 
 
 try:
-    my_file3 = open('baze.py', 'r', encoding="utf-8")
+    my_file3 = open('baza.py', 'r', encoding="utf-8")
     my_file3.close()
 except FileNotFoundError:
     print("Локальный файл базы не обнаружен!\n")
@@ -761,11 +766,11 @@ except Exception as err:
 def file_info_def():
     #file_info = (f"{str(os.getcwd()) + f"\{__name__}"}")
     file_name = __name__.replace("__","")
-    file_info = f"{green} Рабочая дирректория: {str(os.getcwd())}\{file_name}.py  |{white}"
+    file_info = f"{'*'*80}\n\nРабочая дирректория: {str(os.getcwd())}\{green}{file_name}.py{white}"
 
     if __name__ != "__main__":
-        file_info= file_info + f'''{red}Внимение! Этот файл является главным!{white}'''
-    print(f'''{green}|{file_info}\n{green}+-------------------------------------+{white}''')    
+        file_info= file_info + f'''\n{red}Внимение! Этот файл является главным!{white}'''
+    print(f'''{file_info}\n''')    
 
 
 
@@ -879,14 +884,15 @@ async def status_task():
 
 @bot.event
 async def on_ready():
+    print(f'\n\n'+'*'*80 + f'\n\nStatus: {green}connected{white}\n\n'+'*'*80)
     ply("Успешно запущено!",f"Бот запущен!  {settings['bot']}")   
     #ply("Успешно запущено!",f"Бот запущен!({settings['bot']}")   
     
-    print(f'''{turquoise}
-        █۞███████]▄▄▄▄▄▄▄▄▄▄▄ ★★★★★
-        ▄▅█████████▅▄▃▂
-        █★★-  -★★█ █ ████
-        ◥ ⊙▲⊙▲⊙▲⊙▲⊙▲⊙ ◤ SR{st}''')
+    # print(f'''{turquoise}
+    #     █۞███████]▄▄▄▄▄▄▄▄▄▄▄ ★★★★★
+    #     ▄▅█████████▅▄▃▂
+    #     █★★-  -★★█ █ ████
+    #     ◥ ⊙▲⊙▲⊙▲⊙▲⊙▲⊙ ◤ SR{st}''')
     try:
         os.system(f'title {title}  ^|  Успешно запущено!')  # if os.name == "nt" else "clear")
     except:
@@ -912,6 +918,9 @@ async def on_ready():
 
     # asyncio.run_coroutine_threadsafe(console_commands(), bot.loop)
     owner = bot.get_user(485085685565620234)
+    if owner == None:
+        raise SystemExit(f'{red}Скрипт не смог получить параметры администратора.\nЕсли проигноррировать эту ошибку, то она может сказаться на всей работоспособности скрипта.\nВозможно дело  в Privileged Gateway Intents или в том, что бот никогда не встречался с администратором.{white}')
+    print(f'OWNER - {owner.name}')
     print(f"███████████████████████████████")
     print(f"Прочая информация:\n{info_lokal_pc_ip_and_more}")
     print("███████████████████████████████")
@@ -1987,9 +1996,6 @@ def pres_py():
     try:
 
         from pypresence import Presence
-        import time
-        from time import sleep
-
         RPC = Presence("937294505093267507")
         RPC.connect()
         RPC.update(state=f"Хост активен! ({settings['bot']})",
@@ -2018,12 +2024,13 @@ def check_press_py():
         stat, err = pres_py()
     except TypeError:
         stat = pres_py()
+    print('*'*80)# + '\n')
     if stat == False:
-        print(f"{red}| ERROR: PRESS_PY                     | {err}{white}")
-        print(f"{green}+-------------------------------------+{white}")
+        print(f"Статус Discord {red}выключен!{white}\n{red}{err}{white}")
+        #print('\n\n'+'*'*80)
     else:
-        print(f"{green}| PRESS_PY                            | {white}")
-        print(f"{green}+-------------------------------------+{white}")
+        print(f"Статус Discord {green}включен!{white}")
+        #print('\n\n'+'*'*80)
         pass
 check_press_py()
 #keep_alive_run()
@@ -2090,24 +2097,24 @@ def tray():
 file_info_def()
 
 import urllib3
-while True:
-
+#while True:
+def df():
     try:
 
         try:
-
-            bot.run(token=settings['token'], reconnect=True)  # , log_handler="log.txt")
+            print('*'*80 + f'\n\nConnecting to {yellow}https://discord.gg/{st} ...')
+            bot.run(token=settings['token'])#, reconnect=True)  # , log_handler="log.txt")
 
         except discord.errors.LoginFailure:
             ply("Запуск бота не удался.","Токен устарел! Смените его!")
             print("Токен устарел! Смените его!")
             while True:
                 pass
-        except RuntimeError:
-            print("Session is closed")
+        except RuntimeError as err:
+            print(f"Session is closed: {err}")
             ply("Запуск бота не удался.",f"Session is closed")
-            while True:
-                pass
+            # while True:
+            #     pass
         except discord.errors.ConnectionClosed:
             ply("Запуск бота не удался.","Ошибка с подключением к API Discord.")
             print("Ошибка с подключением к API Discord.")
@@ -2120,9 +2127,18 @@ while True:
         except aiohttp.client_exceptions.ClientOSError as err:
             ply("Ваш пинг слишком огромен!",f"ERR: {err}")
             print("Ваш пинг слишком огромен!")
+            #break
         except aiohttp.client_exceptions.ClientConnectorError as err:
             ply("Скрипт не смог подключиться к discord.gg.",f"ERR: {err}")
             print("Скрипт не смог подключиться к discord.gg.")
+        except SystemExit as err:
+            cls()
+            ply("Фатальная ошибка!",f"ERR: {err}")
+            print(f"{err}")
+            while True:
+                pass
+            #raise err  
+
         except Exception as err:
               ply("Запуск бота не удался.",f"ERR: {err}")
 
@@ -2140,3 +2156,6 @@ while True:
 
     except Exception as error:
         print(error)
+df()
+while True:
+    pass
